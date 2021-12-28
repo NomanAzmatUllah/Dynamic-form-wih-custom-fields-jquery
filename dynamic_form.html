@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+
+<style>
+    div.form.striped-rows .form-group:nth-child(even) {
+        background-color: #F5F7FA;
+    }
+
+    div.form.striped-rows .form-group {
+        margin: 0;
+    }
+
+    div.form.striped-rows .form-group .label-control {
+        padding-top: 1.5rem;
+    }
+
+    div.form.striped-rows .form-group>div {
+        padding: 1.2rem 0 1.2rem 1.2rem;
+        ;
+    }
+
+    div.form.form-bordered .form-group {
+        margin: 0;
+        border-bottom: 1px solid #EBEFF5;
+    }
+
+    div.form.form-bordered .form-group .label-control {
+        padding-top: 1.5rem;
+    }
+
+    div.form.form-bordered .form-group>div {
+        padding: 1.2rem 1.2rem 1.2rem 1.2rem;
+        border-left: 1px solid #EBEFF5;
+    }
+
+    div.form.form-bordered .form-group.last {
+        border-bottom: 0;
+    }
+
+    @media (max-width: 767px) {
+        div.form.form-bordered .form-group>div {
+            padding: 10px 15px;
+            border-left: 0px solid #EBEFF5;
+        }
+
+        div.form.form-bordered .form-group .label-control {
+            padding: 0px 15px;
+            padding-top: 10px;
+            margin-bottom: 0;
+        }
+
+        div.form.form-horizontal .form-group .label-control {
+            text-align: unset !important;
+        }
+    }
+
+    @media (min-width: 576px) {
+        div.form.form-horizontal .form-group .label-control {
+            text-align: right;
+        }
+    }
+</style>
+
+<body>
+    <div class="card">
+        <div class="card-header">
+            Generate Dynamic form
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">Get Your Form</h5>
+            <p class="card-text"></p>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="col-md-12 form-inline">
+                        <label class="col-md-3">How many fields you have in form</label>
+                        <input id="fieldname" type="number" class="form-control col-md-6"
+                            placeholder="Please Enter Number of fields" />
+                        <input id="GenerateFields" type="button" class="btn btn-primary" value="Generate Feild" />
+                    </div>
+                    <div id="BindColumns"></div>
+                    <div id="false" class=" content-body" style="visibility:hidden;">
+                        <section id="Generateforms">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="card">
+                                        <div class="card-header bg-light">
+                                            <h4 class="form-section"><i class="feather icon-user"></i>Personal Info</h4>
+                                        </div>
+                                        <div class="card-content collpase show">
+                                            <div class="card-body">
+                                                <div class="form form-horizontal striped-rows form-bordered" id="appendform"></div>
+                                            </div>
+                                            <div class="card-footer form-inline d-flex justify-content-center bg-light" id="Footer"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+</body>
+</html>
+
+<script>
+    var fieldname = '';
+    var arr = [];
+    $(document).ready(function () {
+
+        $("#GenerateFields").click(function () {
+
+            fieldname = $("#fieldname").val();
+            if (fieldname == '' || fieldname < 0 || fieldname == 0) {
+                alert("Please Enter Number Of Fields Or correct Input");
+            } else {
+
+                GetNumberOfFields(fieldname);
+            }
+        });
+
+        $("#BindColumns").on('click', '.clickform', function (e) {
+
+            e.preventDefault();
+            GenerateForm();
+        });
+    });
+
+    //Generate Fields
+    function GetNumberOfFields(values) {
+        $("#BindColumns").empty();
+        var items = '';
+
+        for (var i = 1; i <= values; i++) {
+            items += ` <br /> <div class="col-md-12 form-inline">
+                        <label class="col-md-3">please Enter ${i} Field Name</label>
+                        <input id=${i} type="text" class="form-control col-md-6 getFieldsName"
+                            placeholder="Please Enter Name Of Field ${i}" />
+                    </div>`
+        }
+        $("#BindColumns").append(` <br><h4 class="text-center">Eg: First Name</h4>`);
+        $("#BindColumns").append(items);
+        $("#BindColumns").append(`<br> <input id="GenerateForms" type="button" class="btn btn-primary text-center clickform" style="text-align-center" value="Generate forms" /></h4>`);
+    }
+
+    function GenerateForm() {
+        //arr[0] = "<h4 class='form-section'><i class='feather icon-user'></i></h4>";
+        // $("#appendform").append(`<h4 class="form-section"><i class="feather icon-user"></i></h4>`);
+        for (var i = 1; i <= fieldname; i++) {
+            arr[i] = caratingforms($(`#${i}`).val());
+
+        }
+        for (var i = 1; i < arr.length; i++) {
+            $("#appendform").append(arr[i]);
+        }
+         $("#Footer").append(`<button type="button" class="btn btn-danger">Cancel</button> &nbsp;&nbsp;&nbsp;
+                                   <button type="button" class="btn btn-success">Submit</button>`)
+         $("#false").css("visibility", "visible");
+    }
+
+    function caratingforms(fieldname) {
+        debugger;
+        var item = '';
+        fieldname = fieldname.replace(/ /g, '');
+        fieldname = fieldname.toLowerCase();
+        switch (fieldname) {
+            case "firstname":
+                item = `  <div class="form-group row">
+                                            <label class="col-md-3 label-control" for="projectinput1">First Name</label>
+                                            <div class="col-md-9">
+                                                <input type="text" id="firstname" class="form-control"
+                                                    placeholder="First Name" name="fname" />
+                                            </div>
+                                        </div>`
+                break;
+            case "lastname":
+                item = `  <div class="form-group row">
+                                            <label class="col-md-3 label-control" for="projectinput1">Last Name</label>
+                                            <div class="col-md-9">
+                                                <input type="text" id="lastname" class="form-control"
+                                                    placeholder="Last Name" name="lname" />
+                                            </div>
+                                        </div>`
+                break;
+                case "email":
+                item = `  <div class="form-group row">
+                                            <label class="col-md-3 label-control" for="projectinput1">Email</label>
+                                            <div class="col-md-9">
+                                                <input type="email" id="email" class="form-control"
+                                                    placeholder="Email" name="email" />
+                                            </div>
+                                        </div>`
+                break;
+                case "cnic":
+                item = `  <div class="form-group row">
+                                            <label class="col-md-3 label-control" for="projectinput1">CNIC</label>
+                                            <div class="col-md-9">
+                                                <input type="text" id="cnic" class="form-control"
+                                                    placeholder="Cnic" name="cnic" />
+                                            </div>
+                                        </div>`
+                break;
+                case "phone":
+                item = `  <div class="form-group row">
+                                            <label class="col-md-3 label-control" for="projectinput1">Contact</label>
+                                            <div class="col-md-9">
+                                                <input type="text" id="contact" class="form-control"
+                                                    placeholder="Contact" name="contc" />
+                                            </div>
+                                        </div>`
+                break;
+                case "contact":
+                item = `  <div class="form-group row">
+                                            <label class="col-md-3 label-control" for="projectinput1">Contact</label>
+                                            <div class="col-md-9">
+                                                <input type="text" id="contact" class="form-control"
+                                                    placeholder="Contact" name="contc" />
+                                            </div>
+                                        </div>`
+                break;
+                case "password":
+                item = `  <div class="form-group row">
+                                            <label class="col-md-3 label-control" for="projectinput1">Password</label>
+                                            <div class="col-md-9">
+                                                <input type="password" id="password" class="form-control"
+                                                    placeholder="Password" name="pass" />
+                                            </div>
+                                        </div>`
+                break;
+                case "confirmpassword":
+                item = `  <div class="form-group row">
+                                            <label class="col-md-3 label-control" for="projectinput1">Confirm Password</label>
+                                            <div class="col-md-9">
+                                                <input type="password" id="conpassword" class="form-control"
+                                                    placeholder="Confirm Password" name="conpass" />
+                                            </div>
+                                        </div>`
+                break;
+                case "dropdown":
+                item = `  <div class="form-group row">
+                                            <label class="col-md-3 label-control" for="projectinput1">DropDown</label>
+                                            <div class="col-md-9">
+                                             <select id="Dropdown"class="form-control">
+                                                <option value ="0">Please Select</option></select>   
+                                            </div>
+                                        </div>`
+                break;
+                case "textarea":
+                item = `  <div class="form-group row">
+                                            <label class="col-md-3 label-control" for="projectinput1">Text Area</label>
+                                            <div class="col-md-9">
+                                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                        </div>`
+                break;
+        }
+        return item;
+
+    }
+</script>
